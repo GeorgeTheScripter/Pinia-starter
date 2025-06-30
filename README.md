@@ -24,10 +24,10 @@ npm run dev
 ```
 
 ## Структура
-
-text
-/src/stores # Хранилища
-/src/components # Примеры компонентов
+# Хранилища
+/src/stores 
+# Примеры компонентов
+/src/components 
 
 ## Особенности
 
