@@ -37,26 +37,24 @@
     </div>
 
     <div v-else class="search">
-      <h3>Search</h3>
+      <Search />
     </div>
   </main>
 </template>
 
 <script>
 import Movie from "./components/Movie.vue";
-import { useMovieStore } from "./stores/MovieStore";
+import Search from "./components/Search.vue";
+import { useCompositionMovieStore } from "./stores/CompositionMovieStore";
 
-// const movieStore = useMovieStore();
-// const setTab = (id) => {
-//   movieStore.setActiveTab(id);
-// };
 export default {
   components: {
     Movie,
+    Search,
   },
   data() {
     return {
-      movieStore: useMovieStore(),
+      movieStore: useCompositionMovieStore(),
     };
   },
 

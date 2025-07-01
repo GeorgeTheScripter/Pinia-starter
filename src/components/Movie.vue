@@ -1,46 +1,81 @@
 <template>
   <div class="movie">
     <img
-      :src="`https://image.tmdb.org/t/p/w300_and_h450_bestv2${movie.poster_path}`"
-      :alt="movie.original_title"
+      :src="`${movie.poster?.previewUrl}`"
+      :alt="movie.name"
       class="movie-img"
     />
 
     <div>
       <div class="movie-name">
-        {{ movie.original_title }} ({{ movie.release_date }})
+        {{ movie.name || movie.alternativeName }} ({{ movie.year }})
 
-        <span class="movie-overview">{{ movie.overview }}</span>
+        <span class="movie-overview">{{ movie.description }}</span>
       </div>
-      <div class="movie-buttons">
+      <div class="movie-buttons" v-if="!isSearched">
         <button
           @click="toggleWatched(movie.id)"
           class="btn movie-buttons-watched"
         >
-          <span v-if="movie.isWatched">Watched</span>
-          <span v-else>Unwatched</span>
+          <span v-if="movie.isWatched">Unwatched</span>
+          <span v-else>Watched</span>
         </button>
 
         <button @click="deleteMovie(movie.id)" class="btn movie-buttons-delete">
           delete
         </button>
       </div>
+
+      <div v-else>
+        <button
+          class="btn movie-buttons-delete"
+          @click="addToMovieFavorite(movie)"
+        >
+          Add
+        </button>
+      </div>
     </div>
   </div>
 </template>
 
-<script setup>
+<script>
 import { useMovieStore } from "../stores/MovieStore";
+import { useCompositionMovieStore } from "../stores/CompositionMovieStore";
+import { useSearchStore } from "../stores/SearchStore";
+import { useCompositionSearchStore } from "../stores/CompositionSearchStore";
 
-const { toggleWatched, deleteMovie } = useMovieStore();
-
-const props = defineProps({
-  movie: {
-    type: Object,
-    required: true,
-    default: () => {},
+export default {
+  data() {
+    return {
+      movieStore: useCompositionMovieStore(),
+      searchStore: useCompositionSearchStore(),
+    };
   },
-});
+  props: {
+    movie: {
+      type: Object,
+      required: true,
+      default: () => ({}),
+    },
+    isSearched: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
+  methods: {
+    toggleWatched(id) {
+      this.movieStore.toggleWatched(id);
+    },
+    deleteMovie(id) {
+      this.movieStore.deleteMovie(id);
+    },
+    addToMovieFavorite(movie) {
+      console.log(movie);
+      this.searchStore.addToMovieFavorite(movie);
+    },
+  },
+};
 </script>
 
 <style scoped>
