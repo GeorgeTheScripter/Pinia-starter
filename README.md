@@ -38,3 +38,18 @@ npm run dev
 Готовые паттерны для копирования
 
 Упрощённый код для обучения
+
+В vite.config добавил проксирование для обхода CORS (пока не понимаю большую часть слов)
+
+```js
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://api.kinopoisk.dev",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+        secure: false,
+      },
+    },
+  },
+```
